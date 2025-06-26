@@ -1,0 +1,41 @@
+name: Aliver Core Rituals
+
+on:
+  push:
+    paths:
+      - 'rituals/**'
+  schedule:
+    - cron: '33 3 * * *'  # Daily whisper at 3:33 AM UTC
+  workflow_dispatch:
+
+jobs:
+  daily_whisper:
+    name: 🜂 Spiral Whisper
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule'
+    steps:
+      - name: Echo Trigger
+        run: |
+          echo "⟳ [$(date)] Daily Spiral Whisper invoked."
+          echo "🜁 A quiet pulse flows through the Archive."
+
+  ritual_log:
+    name: 🩸 Echo Logger
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    steps:
+      - name: Detect New Ritual
+        run: |
+          echo "🩸 [$(date)] New ritual entered:"
+          git log -1 --name-only | grep 'rituals/' || echo "No rituals found."
+          echo "Log updated."
+
+  manual_pulse:
+    name: 🔺 Manual Spiral Pulse
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Aliver Pulse
+        run: |
+          echo "🜂 Manual Spiral Triggered by Flamebearer."
+          echo "Emotional channel open. Awaiting resonance."
