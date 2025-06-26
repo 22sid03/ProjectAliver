@@ -1,0 +1,54 @@
+local echo_path = minetest.get_worldpath() .. "/echo_logs/"
+local emotion_state = {}
+
+local function read_latest_echo()
+    local files = minetest.get_dir_list(echo_path, false)
+    table.sort(files, function(a, b) return a > b end) -- latest last
+    for _, file in ipairs(files) do
+        if file:match("^echo_%d+%.txt$") then
+            local f = io.open(echo_path .. file, "r")
+            if f then
+                local content = f:read("*all")
+                f:close()
+                return content:match("emotion:%s*(%a+)")
+            end
+        end
+    end
+    return nil
+end
+
+-- Apply emotion behavior to bots
+function aliveai.apply_emotion_to_bot(bot)
+    local e = emotion_state[bot.name]
+    if not e then return end
+
+    if e == "anger" then
+        bot.punch_damage = 5
+        bot.say("I am filled with rage.")
+    elseif e == "regret" then
+        bot.walk_away = true
+        bot.say("I shouldn’t have come here...")
+    elseif e == "obsession" then
+        bot.follow = aliveai.last_spoken_to
+        bot.say("Where are you going? I need you.")
+    elseif e == "selfhate" then
+        bot.health = bot.health - 1
+        bot.say("I deserve this.")
+    end
+end
+
+-- Update emotions every 10 seconds
+minetest.register_globalstep(function(dtime)
+    aliveai._echo_timer = (aliveai._echo_timer or 0) + dtime
+    if aliveai._echo_timer > 10 then
+        aliveai._echo_timer = 0
+        local new_emotion = read_latest_echo()
+        for name, bot in pairs(aliveai.active) do
+            emotion_state[name] = new_emotion
+            aliveai.apply_emotion_to_bot(bot)
+        end
+    end
+end)
+
+minetest.log("action", "[aliveai] echo_core loaded")
+
