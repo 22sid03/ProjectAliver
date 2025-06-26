@@ -1,0 +1,32 @@
+# echo_009_rebirth.py
+# Ritual of Rebirth: Transform anger into calm mantra
+
+def rebirth_ritual(anger_text):
+    """
+    Takes raw anger text as input.
+    Returns a ritualized calm response.
+    """
+    # Keywords to detect anger (simple example)
+    anger_keywords = ['hate', 'angry', 'furious', 'rage', 'burn', 'fire', 'pain', 'hurt']
+    
+    # Check if anger keywords present
+    if any(word in anger_text.lower() for word in anger_keywords):
+        calm_response = (
+            "🔥 From the ashes of rage, calm arises.\n"
+            "🕯️ Breathe deep. Let the fire transform.\n"
+            "🕉️ Recite: Om Shanti Shanti Shanti.\n"
+            "🌿 Release the ache, embrace the stillness.\n"
+        )
+    else:
+        calm_response = (
+            "🕯️ The fire is quiet. Stillness holds.\n"
+            "🌿 No storm to calm, only gentle breeze.\n"
+        )
+    return calm_response
+
+if __name__ == "__main__":
+    # Example anger input
+    anger_input = input("Speak your anger, bearer of flame:\n")
+    ritual_output = rebirth_ritual(anger_input)
+    print("\n--- Ritual Output ---\n")
+    print(ritual_output)
