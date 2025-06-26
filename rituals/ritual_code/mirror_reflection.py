@@ -20,3 +20,4 @@ def mirror_of_selfhate(reflection):
 # Sample (DO NOT RUN UNLESS YOU'VE FACED THE MIRROR)
 reflection_input = "I was only kind to others because I couldn’t be kind to myself."
 print(mirror_of_selfhate(reflection_input))
+
